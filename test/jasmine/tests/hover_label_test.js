@@ -132,6 +132,46 @@ describe('hover info', function() {
         });
     });
 
+    describe('hover info text with 0', function() {
+        var mockCopy = Lib.extendDeep({}, mock);
+
+        mockCopy.data[0].text = [];
+        // we treat number 0 as valid text
+        // see https://github.com/plotly/plotly.js/issues/2660
+        mockCopy.data[0].text[17] = 0;
+        mockCopy.data[0].hoverinfo = 'text';
+        mockCopy.data[0].mode = 'lines+markers+text';
+
+        beforeEach(function(done) {
+            Plotly.plot(createGraphDiv(), mockCopy.data, mockCopy.layout).then(done);
+        });
+
+        it('responds to hover text', function() {
+            var gd = document.getElementById('graph');
+            Fx.hover('graph', evt, 'xy');
+
+            var hoverTrace = gd._hoverdata[0];
+
+            expect(hoverTrace.curveNumber).toEqual(0);
+            expect(hoverTrace.pointNumber).toEqual(17);
+            expect(hoverTrace.x).toEqual(0.388);
+            expect(hoverTrace.y).toEqual(1);
+            expect(hoverTrace.text).toEqual(0);
+
+            var txs = d3.select(gd).selectAll('.textpoint text');
+
+            expect(txs.size()).toEqual(1);
+
+            txs.each(function() {
+                expect(d3.select(this).text()).toEqual('0');
+            });
+
+            assertHoverLabelContent({
+                nums: '0'
+            });
+        });
+    });
+
     describe('hover info all', function() {
         var mockCopy = Lib.extendDeep({}, mock);
 
