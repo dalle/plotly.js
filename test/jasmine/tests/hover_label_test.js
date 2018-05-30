@@ -152,18 +152,18 @@ describe('hover info', function() {
 
             var hoverTrace = gd._hoverdata[0];
 
-            expect(hoverTrace.curveNumber).toEqual(0);
-            expect(hoverTrace.pointNumber).toEqual(17);
-            expect(hoverTrace.x).toEqual(0.388);
-            expect(hoverTrace.y).toEqual(1);
-            expect(hoverTrace.text).toEqual(0);
+            expect(hoverTrace.curveNumber).toBe(0);
+            expect(hoverTrace.pointNumber).toBe(17);
+            expect(hoverTrace.x).toBe(0.388);
+            expect(hoverTrace.y).toBe(1);
+            expect(hoverTrace.text).toBe(0);
 
             var txs = d3.select(gd).selectAll('.textpoint text');
 
-            expect(txs.size()).toEqual(1);
+            expect(txs.size()).toBe(1);
 
             txs.each(function() {
-                expect(d3.select(this).text()).toEqual('0');
+                expect(d3.select(this).text()).toBe('0');
             });
 
             assertHoverLabelContent({
